@@ -68,7 +68,7 @@ namespace NGeoHash
  * @param {double} latitude
  * @param {double} longitude
  * @param {int} numberOfChars
- * @returns {String}
+ * @returns {string}
  */
 
         public static string Encode(double latitude, double longitude, int numberOfChars = 9)
@@ -186,7 +186,7 @@ namespace NGeoHash
  * Decode Bounding Box
  *
  * Decode hashString into a bound box matches it. Data returned in a four-element array: [minlat, minlon, maxlat, maxlon]
- * @param {String} hashString
+ * @param {string} hashString
  * @returns {double[]}
  */
 
@@ -327,7 +327,7 @@ namespace NGeoHash
          *
          * Decode a hash number into pair of latitude and longitude. A javascript object is returned with keys `latitude`,
          * `longitude` and `error`.
-         * @param {long} hash_int
+         * @param {long} hashInt
          * @param {int} bitDepth
          * @returns {GeohashDecodeResult}
          */
@@ -383,7 +383,9 @@ namespace NGeoHash
  * [1,0] - north
  * [1,1] - northeast
  * ...
- * @param {string} hash_string
+ * @param {long} hash
+ * @param {int[]} direction
+ * @param {int} bitdepth
  * @returns {long}
 */
 
@@ -402,8 +404,8 @@ namespace NGeoHash
  * 7 0 1
  * 6 x 2
  * 5 4 3
- * @param {String} hash_string
- * @returns {encoded neighborHashList|Array}
+ * @param {string} hashString
+ * @returns {encoded neighborHashList|string[]}
  */
 
         public static string[] Neighbors(string hashString)
@@ -454,15 +456,15 @@ namespace NGeoHash
  * 7 0 1
  * 6 x 2
  * 5 4 3
- * @param {Number} hash_int
- * @param {Number} bitDepth
- * @returns {EncodeInt'd neighborHashIntList|Array}
+ * @param {long} hashInt
+ * @param {int} bitDepth
+ * @returns {EncodeInt'd neighborHashIntList|long[]}
  */
 
-        public static long[] NeighborsInt(int hash_int, int bitDepth = 52)
+        public static long[] NeighborsInt(long hashInt, int bitDepth = 52)
         {
 
-            var lonlat = DecodeInt(hash_int, bitDepth);
+            var lonlat = DecodeInt(hashInt, bitDepth);
             var coords = new GeohashDecodeResult
             {
                 Coordinates = lonlat.Coordinates,
@@ -500,12 +502,12 @@ namespace NGeoHash
  * Bounding Boxes
  *
  * Return all the hashString between minLat, minLon, maxLat, maxLon in numberOfChars
- * @param {Number} minLat
- * @param {Number} minLon
- * @param {Number} maxLat
- * @param {Number} maxLon
- * @param {Number} numberOfChars
- * @returns {bboxes.hashList|Array}
+ * @param {double} minLat
+ * @param {double} minLon
+ * @param {double} maxLat
+ * @param {double} maxLon
+ * @param {int} numberOfChars
+ * @returns {bboxes.hashList|string[]}
  */
 
         public static string[] Bboxes(double minLat, double minLon, double maxLat, double maxLon, int numberOfChars = 9)
@@ -539,17 +541,17 @@ namespace NGeoHash
             return hashList.ToArray();
         }
 
-/**
- * Bounding Boxes Integer
- *
- * Return all the hash integers between minLat, minLon, maxLat, maxLon in bitDepth
- * @param {Number} minLat
- * @param {Number} minLon
- * @param {Number} maxLat
- * @param {Number} maxLon
- * @param {Number} bitDepth
- * @returns {BboxesInt.hashList|Array}
- */
+        /**
+         * Bounding Boxes Integer
+         *
+         * Return all the hash integers between minLat, minLon, maxLat, maxLon in bitDepth
+         * @param {double} minLat
+         * @param {double} minLon
+         * @param {double} maxLat
+         * @param {double} maxLon
+         * @param {int} bitDepth
+         * @returns {bboxes.hashList|long[]}
+         */
 
         public static long[] BboxesInt(double minLat, double minLon, double maxLat, double maxLon, int bitDepth = 52)
         {
