@@ -1,5 +1,6 @@
 NGeoHash
 ========
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/ngeohash)](https://www.nuget.org/packages/ngeohash)
 
 C# Port of Node-Geohash 
 
