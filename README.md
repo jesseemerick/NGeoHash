@@ -1,4 +1,4 @@
-NGeoHash
+### NGeoHash
 ========
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/ngeohash)](https://www.nuget.org/packages/ngeohash)
 
@@ -6,23 +6,17 @@ C# Port of Node-Geohash
 
 This is a line for line port to C# of Node-Geohash https://github.com/sunng87/node-geohash
 
+The project is available in nuget - https://www.nuget.org/packages/ngeohash/
 
-Copyright (c) 2014 Jesse Emerick
+#### Usage
+```csharp
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+// Fort Worth
+var location = new
+{
+	latitude = 32.768799,
+	longitude = -97.309341,
+};
+var result = GeoHash.Encode(location.latitude, location.longitude); //
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+```
