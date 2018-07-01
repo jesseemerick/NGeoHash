@@ -3,6 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>1.1.0</Version>
+    <PackageProjectUrl>https://github.com/jesseemerick/NGeoHash</PackageProjectUrl>
+    <Authors>Jesse Emerick, Leonardo Rosales, Robin Michael (siliconrob)</Authors>
+    <Description>C# Port of Node-Geohash.  This is a line for line port to C# of Node-Geohash https://github.com/sunng87/node-geohash</Description>
+    <PackageLicenseUrl>https://github.com/jesseemerick/NGeoHash/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Copyright (c) 2014 Jesse Emerick + 
+    Copyright (c) 2017 Leonardo Rosales
+    Copyright (c) 2018 Robin Michael (siliconrob)</Copyright>
+    <PackageReleaseNotes>Update to .NETStandard 2</PackageReleaseNotes>
+    <PackageTags>geohash node-geohash ngeohash</PackageTags>
   </PropertyGroup>
 
 </Project>
