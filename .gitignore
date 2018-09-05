@@ -269,10 +269,3 @@ __pycache__/
 
 # Cake - Uncomment if you are using it
 # tools/
-
-/src/SolcastApi/Properties/launchSettings.json
-/src/SolcastApi.ServiceModel/SolcastApi.ServiceModel.csproj.migration_in_place_backup
-/src/SolcastApi.ServiceInterface/SolcastApi.ServiceInterface.csproj.migration_in_place_backup
-docker/postgres/sql-scripts/
-/src/SolcastApi/out/
-/docker-compose.yml
