@@ -7,8 +7,15 @@ namespace NGeoHash.Tests.Unit
     {
         private const double Latitude = 37.8324;
         private const double Longitude = 112.5584;
+
         private const string HashString = "ww8p1r4t8";
         private const long HashStringInt = 4064984913515641;
+
+        [Fact]
+        public void DecodeInvalid()
+        {
+            Assert.ThrowsAny<System.Collections.Generic.KeyNotFoundException>(() =>  GeoHash.Decode(@"happy times"));
+        }
 
         [Fact]
         public void Encode_WhenTheNumberOfCharsIsNotProvided_ReturnsHashStringWithTheDefaultNumberOfChars()
