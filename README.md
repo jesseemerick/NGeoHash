@@ -29,7 +29,7 @@ var errorMarginLon = decoded.Error.Lon //	2.1457672119140625E-05
 ```
 
 
-#### Usage
+#### Invalid Usage
 ```csharp
 
 var bad = GeoHash.Decode("happy times"); // Throws exception
