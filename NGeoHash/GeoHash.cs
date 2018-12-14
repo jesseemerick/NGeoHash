@@ -167,7 +167,7 @@ namespace NGeoHash
          * @param {string} hashString
          * @returns {double[]}
          */
-        public static double[] DecodeBbox(string hashString)
+        public static BoundingBox DecodeBbox(string hashString)
         {
 
             var isLon = true;
@@ -214,7 +214,19 @@ namespace NGeoHash
                 }
             }
 
-            return new[] {minLat, minLon, maxLat, maxLon};
+            return new BoundingBox
+            {
+                Maximum = new Coordinates
+                {
+                    Lat = maxLat,
+                    Lon = maxLon
+                },
+                Minimum = new Coordinates
+                {
+                    Lat = minLat,
+                    Lon = minLon
+                }
+            };
         }
 
         /**
@@ -225,7 +237,7 @@ namespace NGeoHash
          * @param {int} bitDepth
          * @returns {double}
          */
-        public static double[] DecodeBboxInt(long hashInt, int bitDepth = 52)
+        public static BoundingBox DecodeBboxInt(long hashInt, int bitDepth = 52)
         {
 
 
@@ -238,10 +250,8 @@ namespace NGeoHash
 
             for (var i = 0; i < step; i++)
             {
-
-                var lonBit = get_bit(hashInt, ((step - i) * 2) - 1);
-                var latBit = get_bit(hashInt, ((step - i) * 2) - 2);
-
+                var lonBit = DecodeBit(hashInt, (step - i) * 2 - 1);
+                var latBit = DecodeBit(hashInt, (step - i) * 2 - 2);
                 if (latBit == 0)
                 {
                     maxLat = (maxLat + minLat) / 2;
@@ -250,7 +260,6 @@ namespace NGeoHash
                 {
                     minLat = (maxLat + minLat) / 2;
                 }
-
                 if (lonBit == 0)
                 {
                     maxLon = (maxLon + minLon) / 2;
@@ -260,11 +269,22 @@ namespace NGeoHash
                     minLon = (maxLon + minLon) / 2;
                 }
             }
-
-            return new[] {minLat, minLon, maxLat, maxLon};
+            return new BoundingBox
+            {
+                Maximum = new Coordinates
+                {
+                    Lat = maxLat,
+                    Lon = maxLon
+                },
+                Minimum = new Coordinates
+                {
+                    Lat = minLat,
+                    Lon = minLon
+                }
+            };
         }
 
-        public static long get_bit(long bits, int position)
+        public static long DecodeBit(long bits, int position)
         {
             return (long) (bits / Math.Pow(2, position)) & 0x01;
         }
@@ -280,10 +300,10 @@ namespace NGeoHash
         public static GeohashDecodeResult Decode(string hashString)
         {
             var bbox = DecodeBbox(hashString);
-            var lat = (bbox[0] + bbox[2]) / 2;
-            var lon = (bbox[1] + bbox[3]) / 2;
-            var latErr = bbox[2] - lat;
-            var lonErr = bbox[3] - lon;
+            var lat = (bbox.Minimum.Lat + bbox.Maximum.Lat) / 2;
+            var lon = (bbox.Minimum.Lon + bbox.Maximum.Lon) / 2;
+            var latErr = bbox.Maximum.Lat - lat;
+            var lonErr = bbox.Maximum.Lon - lon;
             return new GeohashDecodeResult
             {
                 Coordinates = new Coordinates
@@ -312,10 +332,10 @@ namespace NGeoHash
         public static GeohashDecodeResult DecodeInt(long hashInt, int bitDepth = 52)
         {
             var bbox = DecodeBboxInt(hashInt, bitDepth);
-            var lat = (bbox[0] + bbox[2]) / 2;
-            var lon = (bbox[1] + bbox[3]) / 2;
-            var latErr = bbox[2] - lat;
-            var lonErr = bbox[3] - lon;
+            var lat = (bbox.Minimum.Lat + bbox.Maximum.Lat) / 2;
+            var lon = (bbox.Minimum.Lon + bbox.Maximum.Lon) / 2;
+            var latErr = bbox.Maximum.Lat - lat;
+            var lonErr = bbox.Maximum.Lon - lon;
             return new GeohashDecodeResult
             {
                 Coordinates = new Coordinates
@@ -384,11 +404,8 @@ namespace NGeoHash
          */
         public static string[] Neighbors(string hashString)
         {
-
             var hashstringLength = hashString.Count();
-
-            var lonlat = Decode(hashString);
-
+            var lonlat = Decode(hashString);        
             var coords = new GeohashDecodeResult
             {
                 Coordinates = lonlat.Coordinates,
@@ -397,10 +414,9 @@ namespace NGeoHash
                     Lat = lonlat.Error.Lat * 2,
                     Lon = lonlat.Error.Lon * 2
                 }
-
             };
 
-            return new string[]
+            return new[]
             {
                 EncodeNeighbor(hashstringLength, 1, 0, coords),
                 EncodeNeighbor(hashstringLength, 1, 1, coords),
@@ -486,8 +502,6 @@ namespace NGeoHash
          */
         public static string[] Bboxes(double minLat, double minLon, double maxLat, double maxLon, int numberOfChars = 9)
         {
-
-
             var hashSouthWest = Encode(minLat, minLon, numberOfChars);
             var hashNorthEast = Encode(maxLat, maxLon, numberOfChars);
 
@@ -499,8 +513,8 @@ namespace NGeoHash
             var boxSouthWest = DecodeBbox(hashSouthWest);
             var boxNorthEast = DecodeBbox(hashNorthEast);
 
-            var latStep = Math.Round((boxNorthEast[0] - boxSouthWest[0]) / perLat);
-            var lonStep = Math.Round((boxNorthEast[1] - boxSouthWest[1]) / perLon);
+            var latStep = Math.Round((boxNorthEast.Minimum.Lat - boxSouthWest.Minimum.Lat) / perLat);
+            var lonStep = Math.Round((boxNorthEast.Minimum.Lon - boxSouthWest.Minimum.Lon) / perLon);
 
             var hashList = new List<string>();
 
@@ -511,7 +525,6 @@ namespace NGeoHash
                     hashList.Add(Neighbor(hashSouthWest, new[] {lat, lon}));
                 }
             }
-
             return hashList.ToArray();
         }
 
@@ -542,8 +555,8 @@ namespace NGeoHash
             var boxSouthWest = DecodeBboxInt(hashSouthWest, bitDepth);
             var boxNorthEast = DecodeBboxInt(hashNorthEast, bitDepth);
 
-            var latStep = Math.Round((boxNorthEast[0] - boxSouthWest[0]) / perLat);
-            var lonStep = Math.Round((boxNorthEast[1] - boxSouthWest[1]) / perLon);
+            var latStep = Math.Round((boxNorthEast.Minimum.Lat - boxSouthWest.Minimum.Lat) / perLat);
+            var lonStep = Math.Round((boxNorthEast.Minimum.Lon - boxSouthWest.Minimum.Lon) / perLon);
 
             var hashList = new List<long>();
 
