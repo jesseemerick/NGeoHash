@@ -246,12 +246,12 @@ namespace NGeoHash
             var maxLon = 180D;
             var minLon = -180D;
 
-            var step = bitDepth / 2;
+            var step = (double)bitDepth / 2;
 
             for (var i = 0; i < step; i++)
             {
-                var lonBit = DecodeBit(hashInt, (step - i) * 2 - 1);
-                var latBit = DecodeBit(hashInt, (step - i) * 2 - 2);
+                var lonBit = DecodeBit(hashInt, (int)Math.Round((step - i) * 2 - 1));
+                var latBit = DecodeBit(hashInt, (int)Math.Round((step - i) * 2 - 2));
                 if (latBit == 0)
                 {
                     maxLat = (maxLat + minLat) / 2;
